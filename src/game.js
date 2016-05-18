@@ -76,12 +76,28 @@ Game.prototype.createOnScreenControls = function () {
   this.rightArrow.events.onInputUp.add(function(){
     this.player.customParams.isMovingRight = false;
   }, this);
+
+  this.rightArrow.events.onInputOver.add(function(){
+    this.player.customParams.isMovingRight = true;
+  }, this);
+
+  this.rightArrow.events.onInputOut.add(function(){
+    this.player.customParams.isMovingRight = false;
+  }, this);
   // left
   this.leftArrow.events.onInputDown.add(function(){
     this.player.customParams.isMovingLeft = true;
   }, this);
 
   this.leftArrow.events.onInputUp.add(function(){
+    this.player.customParams.isMovingLeft = false;
+  }, this);
+
+  this.leftArrow.events.onInputOver.add(function(){
+    this.player.customParams.isMovingLeft = true;
+  }, this);
+
+  this.leftArrow.events.onInputOut.add(function(){
     this.player.customParams.isMovingLeft = false;
   }, this);
 }
@@ -98,7 +114,7 @@ Game.prototype.update = function () {
     this.player.body.velocity.x = this.RUNNING_SPEED;
   }
   if((this.cursors.up.isDown || this.player.customParams.mustJump) && this.player.body.touching.down){
-    
+
     this.player.body.velocity.y = -this.JUMPING_SPEED;
     this.player.customParams.mustJump = false;
   }
