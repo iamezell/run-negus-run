@@ -28,6 +28,8 @@ Game.prototype.preload = function(){
 Game.prototype.create = function () {
   // this.input.onDown.add(this.onInputDown, this);
 
+
+
   //platform ----------------------------------------------------
   this.ground = this.add.sprite(0, 400, 'ground');
   this.game.physics.arcade.enable(this.ground);
@@ -35,10 +37,23 @@ Game.prototype.create = function () {
   this.ground.body.immovable = true;
 
   //platform ----------------------------------------------------
-  this.platform = this.add.sprite(0, 300, 'platform');
-  this.game.physics.arcade.enable(this.platform);
-  this.platform.body.allowGravity = false;
-  this.platform.body.immovable = true;
+  var platformData = [
+    {"x":0, "y":400},
+    {"x":45, "y":360},
+    {"x":90, "y":290},
+    {"x":0, "y":140}
+  ];
+
+  this.platforms = this.add.group();
+  this.platforms.enableBody = true;
+
+  platformData.forEach(function(element){
+    this.platforms.create(element.x, element.y, 'platform');
+  }, this);
+
+  this.platforms.setAll('body.immovable', true);
+  this.platforms.setAll('body.allowGravity', false);
+
 
   //player ----------------------------------------------------
   this.player = this.add.sprite(100, 350, 'player', 3);
@@ -48,6 +63,8 @@ Game.prototype.create = function () {
   this.player.customParams = {};
   this.game.physics.arcade.enable(this.player);
   this.createOnScreenControls();
+
+
 
 };
 
@@ -103,8 +120,8 @@ Game.prototype.createOnScreenControls = function () {
 }
 
 Game.prototype.update = function () {
-  this.game.physics.arcade.collide(this.player, this.ground, this.landed);
-  this.game.physics.arcade.collide(this.player, this.platform, this.landed);
+  this.game.physics.arcade.collide(this.player, this.ground);
+  this.game.physics.arcade.collide(this.player, this.platforms);
 
   this.player.body.velocity.x = 0;
 
